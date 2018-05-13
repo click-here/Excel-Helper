@@ -1,0 +1,3 @@
+# Excel Helper
+
+In the past I used to work with a lot of Excel files and csv files. I'm going to attempt to write the program I wish I had then. Not sure where this will take me...
