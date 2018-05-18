@@ -4,7 +4,14 @@ import profiler as pf
 from split import split
 
 
-class file:
+# https://stackoverflow.com/a/312464
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+
+class File:
     def __init__(self, fpath):
         self.fpath = fpath
         self.size = os.stat(fpath).st_size
@@ -20,11 +27,30 @@ class file:
             return 'dropna_thresh must be >= 0 but <= 1'
         self.df = pd.read_csv(self.fpath, nrows=preview_row_count, low_memory=False)
         self.df = self.df.dropna(axis=1, how='all', thresh=dropna_thresh * preview_row_count)
-        print('%s column(s)' % self.df.shape[1])
+        column_count = self.df.shape[1]
 
-        for col in self.df.columns:
-            if len(self.df[col].unique()) <= 10:
-                print(col, self.df[col].unique())
+        print('%s column(s)' % column_count)
+
+        chunked_columns = list(chunks(self.df.columns, 10))
+
+        for chunk in chunked_columns:
+            d = dict(enumerate(chunk))
+            for k, v in d.items():
+                print('[%s]' % k, v)
+
+            col = input('Pick a column number > ')
+            if col.lower() == 'q':
+                break
+            elif not col.isdigit():
+                print('Must input a column number or "q" for quit')
+                pass
+            else:
+                col = int(col)
+                print('\n*50')  # clear the console
+                print('Random sample of first %s lines of %s' % (preview_row_count, d[col]))
+                print(self.df[d[col]].sample(20))
+                break
 
 
-f = file('../TestData/npi.csv')
+f = File('../TestData/npi.csv')
+f.specs(.7)
