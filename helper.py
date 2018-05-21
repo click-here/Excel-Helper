@@ -51,7 +51,7 @@ class File:
             else:
                 col = int(col)
                 self.cur_col = d[col]
-                print('\n*50')  # clear the console
+                print('\n'*50)  # clear the console
                 print('Random sample of first %s lines of %s' % (preview_row_count, d[col]))
                 print(self.dfp[d[col]].sample(20))
                 if input("Would you like to load this column? (y/n) ") == 'y'.lower():
