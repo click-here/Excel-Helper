@@ -1,3 +1,7 @@
 1. Load file
 2. Print basic file stats to user
 3. User can then
+
+
+Features to make:
+1. Given a particular column, find values that are substrings of other values in said column. A column containing ['Onion','Chicken','Ion'] would return 'Ion' since it is part of 'Onion'.
